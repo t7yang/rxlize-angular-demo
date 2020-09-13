@@ -1,0 +1,30 @@
+<div class="box">
+  <section class="section">
+    <div class="container">
+      <div class="field">
+        <label class="label">Choose User ID</label>
+        <div class="control">
+          <div class="select">
+            <select [formControl]="userIdCtrl">
+              <option [value]="1">1</option>
+              <option [value]="2">2</option>
+              <option [value]="3">3</option>
+              <option [value]="4">4</option>
+              <option [value]="5">5</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" *ngIf="rxUser.state$ | async as user">
+      <ng-template #content>
+        {{ user.data | json }}
+      </ng-template>
+
+      <progress class="progress my-6" max="100" *ngIf="user.isLoading; else content"></progress>
+    </div>
+  </section>
+</div>

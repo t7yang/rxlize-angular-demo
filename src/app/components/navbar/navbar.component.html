@@ -1,0 +1,29 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" [routerLink]="'/'"> Rxlize Angular Demo </a>
+      <a
+        role="button"
+        class="navbar-burger burger"
+        aria-label="menu"
+        aria-expanded="false"
+        [class.is-active]="isOpen.state$ | async"
+        (click)="isOpen.toggle()"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu" [class.is-active]="isOpen.state$ | async">
+      <div class="navbar-start">
+        <a class="navbar-item" [routerLink]="'/'"> Home </a>
+
+        <a class="navbar-item" [routerLink]="'/todo'"> Todo </a>
+      </div>
+
+      <div class="navbar-end"></div>
+    </div>
+  </div>
+</nav>

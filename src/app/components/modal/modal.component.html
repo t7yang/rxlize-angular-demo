@@ -1,0 +1,7 @@
+<div class="modal" [class.is-active]="isActive">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <ng-content></ng-content>
+  </div>
+  <button class="modal-close is-large" aria-label="close" (click)="closed.emit()"></button>
+</div>

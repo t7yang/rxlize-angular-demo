@@ -1,0 +1,51 @@
+<nav class="panel px-5 py-3">
+  <p class="panel-heading">Todo List</p>
+
+  <div class="panel-block" style="display: block" *ngIf="rxAdd.state$ | async as add">
+    <div class="field has-addons">
+      <div class="control has-icons-left is-expanded">
+        <input class="input" type="text" placeholder="Add" #title />
+        <span class="icon is-left"> 📝 </span>
+      </div>
+      <div class="control">
+        <a class="button is-info" [class.is-loading]="add.isLoading" (click)="rxAdd.source$.next(title.value)"> Add </a>
+      </div>
+    </div>
+  </div>
+
+  <p class="panel-tabs mb-6" *ngIf="select$ | async as select">
+    <a [class.is-active]="select === 'all'" (click)="select$.next('all')">All</a>
+    <a [class.is-active]="select === 'active'" (click)="select$.next('active')">Active</a>
+    <a [class.is-active]="select === 'completed'" (click)="select$.next('completed')">Completed</a>
+  </p>
+
+  <ng-container *ngIf="todoList$ | async as todos">
+    <progress class="progress my-6" max="100" *ngIf="todos.isLoading; else content"></progress>
+
+    <ng-template #content>
+      <div class="columns is-multiline" *ngIf="rxRemove.state$ | async as remove">
+        <ng-container *ngFor="let todo of todos.data">
+          <div class="column is-1">{{ todo.completed ? '✔' : '❌' }}</div>
+          <div class="column is-10" style="cursor: pointer" (click)="toEdit.next(todo); isEditing.on()">
+            {{ todo.title }}
+          </div>
+          <div class="column is-1">
+            <button
+              class="button is-danger is-small"
+              [class.is-loading]="remove.isLoading"
+              (click)="rxRemove.source$.next(todo)"
+            >
+              Remove
+            </button>
+          </div>
+        </ng-container>
+      </div>
+    </ng-template>
+  </ng-container>
+</nav>
+
+<app-modal [isActive]="isEditing.state$ | async" (closed)="isEditing.off()">
+  <div class="box">
+    {{ toEdit | async | json }}
+  </div>
+</app-modal>
