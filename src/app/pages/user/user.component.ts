@@ -2,8 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { rxAsync, rxNgLifecycle } from 'rxlize';
+import { createRxNgHooks, ngHooks, rxAsync, RxNgHooks } from 'rxlize';
 import { UserService } from '../../services/user/user.service';
+
+const hooks = ngHooks(['ngOnDestroy']);
 
 @Component({
   selector: 'app-user',
@@ -16,7 +18,8 @@ export class UserComponent {
 
   readonly userIdCtrl = new FormControl(1);
 
-  readonly rxLife = rxNgLifecycle(this, 'ngOnDestroy');
+  @RxNgHooks(hooks)
+  readonly rxLife = createRxNgHooks(hooks);
 
   readonly rxUser = rxAsync(this.id$, $ => $.pipe(switchMap(this.sUser.readUser)));
 
